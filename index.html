@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>西红市技能大赛专家推荐表</title>
+    <style>
+        /* 全局西红柿主题样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #FFF9F5 0%, #FFEBE0 100%);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffc8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            padding: 20px 10px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(230, 57, 35, 0.15);
+            overflow: hidden;
+            border-top: 6px solid #E63923;
+        }
+        h2 {
+            text-align: center;
+            padding: 20px;
+            color: #E63923;
+            background: linear-gradient(90deg, #FF954922, #E6392322, #48A94622);
+        }
+        h4 {
+            color: #48A946;
+            margin: 15px 30px 8px;
+            padding-left: 10px;
+            border-left: 4px solid #48A946;
+        }
+        table {
+            border-collapse: collapse;
+            width: 94%;
+            margin: 10px auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        td, th {
+            border: 1px solid #FFDDD2;
+            padding: 9px;
+            font-size: 14px;
+        }
+        th {
+            background-color: #FF9549;
+            color: #fff;
+        }
+        td:first-child {
+            background-color: #FFF2EE;
+            font-weight: 500;
+            color: #992211;
+            width: 130px;
+        }
+        input, select, textarea {
+            width: 96%;
+            border: 1px solid #FFC2B0;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.2s;
+            background: #FFFCFA;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #E63923;
+            box-shadow: 0 0 0 2px rgba(230,57,35,0.18);
+        }
+        input::placeholder {
+            color: #cc9988;
+        }
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+        .btn-wrap {
+            padding: 20px 30px;
+        }
+        .btn {
+            padding: 9px 26px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-right: 12px;
+        }
+        .btn-submit {
+            background: #E63923;
+            color: white;
+        }
+        .btn-reset {
+            background: #48A946;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.88;
+        }
+        .date-tip {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>西红市职业院校技能大赛专家库人选推荐表</h2>
+    <!-- 已改好form标签：地址匹配后端 /expert/save，th对象为expert -->
+    <form th:action="@{/expert/save}" th:object="${expert}" method="post" id="expertForm">
+        <table>
+            <tr>
+                <td>申请赛道专业大类<span style="color:red">*</span></td>
+                <td colspan="5"><input th:field="*{majorType}" class="mustFill"></td>
+            </tr>
+            <tr>
+                <td>姓名<span style="color:red">*</span></td>
+                <td><input th:field="*{name}" class="mustFill"></td>
+                <td>性别<span style="color:red">*</span></td>
+                <td>
+                    <select th:field="*{gender}" class="mustFill">
+                        <option value="">请选择</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+                <td>民族<span style="color:red">*</span></td>
+                <td>
+                    <select th:field="*{nation}" class="mustFill">
+                        <option value="">请选择</option>
+                        <option value="汉族">汉族</option>
+                        <option value="回族">回族</option>
+                        <option value="傈僳族">傈僳族</option>
+                        <option value="彝族">彝族</option>
+                        <option value="白族">白族</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </td>
+                <td>出生年月<span style="color:red">*</span></td>
+                <td>
+                    <input th:field="*{birthday}" placeholder="xxxx.xx.xx" pattern="^\d{4}\.\d{2}$" class="mustFill">
+                    <div class="date-tip">例：2000.01</div>
+                </td>
+                <td>手机号<span style="color:red">*</span></td>
+                <td><input th:field="*{phone}" maxlength="11" placeholder="11位手机号" pattern="^1[3-9]\d{9}$" class="mustFill"></td>
+            </tr>
+            <tr>
+                <td>政治面貌<span style="color:red">*</span></td>
+                <td>
+                    <select th:field="*{politics}" class="mustFill">
+                        <option value="">请选择</option>
+                        <option value="中共党员">中共党员</option>
+                        <option value="共青团员">共青团员</option>
+                        <option value="群众">群众</option>
+                    </select>
+                </td>
+                <td>学历/学位<span style="color:red">*</span></td>
+                <td>
+                    <select th:field="*{education}" class="mustFill">
+                        <option value="">请选择</option>
+                        <option value="本科及以上">本科及以上</option>
+                        <option value="本科以下">本科以下</option>
+                    </select>
+                </td>
+                <td>身体状况<span style="color:red">*</span></td>
+                <td><input th:field="*{health}" class="mustFill"></td>
+                <td>电子邮箱<span style="color:red">*</span></td>
+                <td><input type="email" th:field="*{email}" class="mustFill"></td>
+            </tr>
+            <tr>
+                <td>工作单位<span style="color:red">*</span></td>
+                <td colspan="3"><input th:field="*{workUnit}" class="mustFill"></td>
+                <td>工作年限<span style="color:red">*</span></td>
+                <td><input th:field="*{workYear}" placeholder="填写年限数字" class="mustFill"></td>
+                <td>职务<span style="color:red">*</span></td>
+                <td><input th:field="*{position}" class="mustFill"></td>
+            </tr>
+            <tr>
+                <td>擅长专业方向<span style="color:red">*</span></td>
+                <td><input th:field="*{goodAt}" class="mustFill"></td>
+                <td>职称(职业资格等级)<span style="color:red">*</span></td>
+                <td><input th:field="*{title}" class="mustFill"></td>
+                <td>身份证<span style="color:red">*</span></td>
+                <td><input th:field="*{idCard}" maxlength="18" placeholder="15/18位身份证" pattern="(^\d{15}$)|(^\d{18}$)|(^\d{17}[Xx]$)" class="mustFill"></td>
+            </tr>
+        </table>
+        <h4>近五年参与技能竞赛专家活动情况</h4>
+        <table>
+            <tr>
+                <th>年份<span style="color:red">*</span></th>
+                <th>赛项/赛道名称<span style="color:red">*</span></th>
+                <th>竞赛类别(市/省/国)<span style="color:red">*</span></th>
+                <th>担任职务<span style="color:red">*</span>
+            </tr>
+            <!-- 竞赛列表对应 List<ExpertExp> expList -->
+            <tr th:each="item,stat : ${expList}">
+                <td><input th:field="*{expList[__${stat.index}__].year}" placeholder="2020" class="expFill"></td>
+                <td><input th:field="*{expList[__${stat.index}__].matchName}" class="expFill"></td>
+                <td>
+                    <select th:field="*{expList[__${stat.index}__].matchLevel}" class="expFill">
+                        <option value="">选择级别</option>
+                        <option value="市赛">市赛</option>
+                        <option value="省赛">省赛</option>
+                        <option value="国赛">国赛</option>
+                    </select>
+                </td>
+                <td><input th:field="*{expList[__${stat.index}__].duty}" placeholder="评委/裁判/指导" class="expFill"></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>获得的表彰或荣誉称号(限3项)<span style="color:red">*</span></td>
+                <td><textarea th:field="*{honorInfo}" placeholder="分行填写3项以内荣誉" class="mustFill"></textarea></td>
+            </tr>
+            <tr>
+                <td>专家所在单位意见<span style="color:red">*</span></td>
+                <td>
+                    <textarea th:field="*{unitOpinion}" class="mustFill"></textarea>
+                    <p class="date-tip">公章：__________  日期：<input type="date" th:field="*{unitDate}" style="width:140px;display:inline;" class="dateFill"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>西红市教育研究院专业意见<span style="color:red">*</span></td>
+                <td>
+                    <textarea th:field="*{researchOpinion}" class="mustFill"></textarea>
+                    <p class="date-tip">推荐教研员签名：__________  日期：<input type="date" th:field="*{researchDate}" style="width:140px;display:inline;" class="dateFill"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>分管部门意见<span style="color:red">*</span></td>
+                <td>
+                    <textarea th:field="*{deptOpinion}" class="mustFill"></textarea>
+                    <p class="date-tip">部门主任签名：__________  日期：<input type="date" th:field="*{deptDate}" style="width:140px;display:inline;" class="dateFill"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>研究院总意见<span style="color:red">*</span></td>
+                <td>
+                    <textarea th:field="*{totalOpinion}" class="mustFill"></textarea>
+                    <p class="date-tip">公章：__________  日期：<input type="date" th:field="*{totalDate}" style="width:140px;display:inline;" class="dateFill"></p>
+                </td>
+            </tr>
+        </table>
+        <div class="btn-wrap">
+            <button class="btn btn-submit" type="submit">提交保存</button>
+            <button class="btn btn-reset" type="reset">重置表单</button>
+        </div>
+    </form>
+</div>
+<script>
+const form = document.getElementById('expertForm');
+// 表单提交校验
+form.addEventListener('submit', function (e) {
+    let isAllFill = true;
+    let tipMsg = '以下内容未填写完整：\n';
+    // 普通必填项校验
+    const mustItems = form.querySelectorAll('.mustFill');
+    mustItems.forEach(item => {
+        if (!item.value.trim()) {
+            isAllFill = false;
+            tipMsg += '- ' + item.closest('td').previousElementSibling?.innerText || '必填项' + '\n';
+        }
+    })
+    // 竞赛经历校验
+    const expItems = form.querySelectorAll('.expFill');
+    expItems.forEach(item => {
+        if (!item.value.trim()) {
+            isAllFill = false;
+            tipMsg += '- 竞赛信息未完善\n';
+        }
+    })
+    // 日期框校验
+    const dateItems = form.querySelectorAll('.dateFill');
+    dateItems.forEach(item => {
+        if (!item.value.trim()) {
+            isAllFill = false;
+            tipMsg += '- 签字日期未选择\n';
+        }
+    })
+    // 出生年月格式校验
+    const birthInput = form.querySelector('input[placeholder="xxxx.xx.xx"]');
+    const birthReg = /^\d{4}\.\d{2}$/;
+    if (!birthReg.test(birthInput.value.trim())) {
+        isAllFill = false;
+        tipMsg += '- 出生年月格式错误(例:2000.01)\n';
+    }
+    // 校验不通过拦截提交
+    if (!isAllFill) {
+        e.preventDefault();
+        alert(tipMsg);
+        return;
+    }
+    // 提交成功弹窗
+    setTimeout(()=>{
+        alert('✅ 表单提交成功！数据已录入数据库');
+        form.reset();
+    },100)
+})
+</script>
+</body>
+</html>
